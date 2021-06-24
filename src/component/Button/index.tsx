@@ -1,9 +1,11 @@
-import { isPropertySignature } from "typescript";
-type Props={
-    text: string;
-}
+import { ButtonHTMLAttributes } from "react";
+
+import './style.scss';
+
+type Props= ButtonHTMLAttributes<HTMLButtonElement>;
+
 export function Button(props:Props){
     return(
-        <button>{props.text}</button>
+        <button className='button' {...props}/>            
     )
 }
