@@ -22,8 +22,25 @@ export function Room() {
   const { user } = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState('');
+  const [load, setLoad] = useState(false);
   const roomId = params.id;
   const { title, questions } = useRoom(roomId);
+  const history = useHistory();
+
+  async function hasRoom() {
+    const roomRef = await database.ref(`rooms/${params.id}`).get();
+
+    if (!roomRef.exists()) {
+      history.push('/')
+      return;
+    }
+    setLoad(true);
+
+  }
+
+  if (!load) {
+    hasRoom()
+  }
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
