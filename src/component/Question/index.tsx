@@ -17,17 +17,16 @@ type QuestionProps = {
 export function Question({
   content,
   author,
-  isAnswered = false,
-  isHighlighted = false,
   children,
+  isAnswered = false,
+  isHighlighted = false
 }: QuestionProps) {
   return (
-    <div
-      className={cx(
-        'question',
-        { answered: isAnswered },
-        { highlighted: isHighlighted && !isAnswered },
-      )}
+    <div className={cx(
+          'question',
+          { answered: isAnswered},
+          {highlighted: isHighlighted && !isAnswered}
+          )}
     >
       <p>{content}</p>
       <footer>
@@ -36,7 +35,7 @@ export function Question({
           <span>{author.name}</span>
         </div>
         <div>
-          {children}
+          { children }
         </div>
       </footer>
     </div>
