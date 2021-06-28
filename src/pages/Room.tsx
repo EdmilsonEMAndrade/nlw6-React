@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import logoImg from '../assets/images/logo.svg';
 
@@ -22,6 +22,22 @@ export function Room() {
   const [newQuestion, setNewQuestion] = useState('');
   const roomId = params.id;
   const { title, questions } = useRoom(roomId);
+  const history = useHistory();
+  const [load, setLoad] = useState(false);
+  async function hasRoom() {
+    const roomRef = await database.ref(`rooms/${params.id}`).get();
+
+    if (!roomRef.exists()) {
+      history.push('/')
+      return;
+    }
+    setLoad(true);
+
+  }
+
+  if (!load) {
+    hasRoom()
+  }
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
