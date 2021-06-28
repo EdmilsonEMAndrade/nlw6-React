@@ -17,19 +17,27 @@ type RoomParams = {
 }
 
 export function Room() {
-  const { user } = useAuth();
+  const { user, signInWithGoogle } = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState('');
   const roomId = params.id;
   const { title, questions } = useRoom(roomId);
   const history = useHistory();
   const [load, setLoad] = useState(false);
+
+
+  async function handleLoginRoom() {
+    if(!user) {
+      await signInWithGoogle();
+    }
+  }
+
+
   async function hasRoom() {
     const roomRef = await database.ref(`rooms/${params.id}`).get();
 
     if (!roomRef.exists()) {
       history.push('/')
-      return;
     }
     setLoad(true);
 
@@ -76,6 +84,8 @@ export function Room() {
   }
 
   return(
+    <>
+    { load &&
     <div id="page-room">
       <header>
         <div className="content">
@@ -103,7 +113,7 @@ export function Room() {
                 <span>{user.name}</span>
               </div>
             ) : (
-              <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
+              <span>Para enviar uma pergunta, <button onClick={handleLoginRoom}>faça seu login</button>.</span>
             )}
             <Button type="submit" disabled={!user} >Enviar pergunta</Button>
           </div>
@@ -136,6 +146,7 @@ export function Room() {
           })}
         </div>
       </main>
-    </div>
+    </div>}
+    </>
   );
 }

@@ -18,8 +18,6 @@ export function NewRoom() {
   async function handleCreateRoom(event: FormEvent) {
     event.preventDefault();
 
-    console.log(newRoom);
-
     if (newRoom.trim() === '') {
       return;
     }
